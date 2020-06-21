@@ -5,4 +5,4 @@ a practice of database
 买家可以和卖家私下进行联系
 后续会添加新功能
 已在阿里云上线，网址为http://182.92.5.189:1234/index.html
-                          --distance
+                          --抱大腿团队
