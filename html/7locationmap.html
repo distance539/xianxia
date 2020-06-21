@@ -1,0 +1,149 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>鼠标拾取地图坐标</title>
+    <link rel="stylesheet" href="../layui/css/layui.css">
+    <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />
+    <script type="text/javascript" src="https://cache.amap.com/lbs/static/addToolbar.js"></script>
+    <script src="https://a.amap.com/jsapi_demos/static/demo-center/js/demoutils.js"></script>
+    <script src="http://cdn.bootcss.com/jquery/1.12.3/jquery.min.js"></script>s
+</head>
+<style type="text/css">
+    html,body{
+        width: 100%;
+        height: 100%;
+        margin: 0px;
+    }
+    .map{
+        height: 100%;
+        width: 100%;
+        float: left;
+    }
+</style>
+<body>
+<div id="container" class="map"></div>
+<div class="input-card">
+    <h4>左击获取经纬度：</h4>
+    <div class="input-item">
+        <input type="text" readonly="true" id="lng">
+        <input type="text" readonly="true" id="lat">
+    </div>
+    <input id="clearMarker" type="button" class="btn" onclick="clearMarker()" value="删除点标记">
+    <!--<input id="clearMarker" type="button" class="btn" onclick="computeDis()" value="计算距离">-->
+    <button id="submitlocation" class="btn">提交上述位置</button>
+</div>
+
+<!--弹出框js css-->
+<script src="../layui/layui.js" charset="utf-8"></script>
+<script>
+    var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+    //关闭iframe
+    $('#submitlocation').on('click', function(){
+        var t_lng = $('#lng').val();
+        var t_lat = $('#lat').val();
+
+        if(t_lng === '' || t_lat === '' ){
+            parent.layer.msg('请在地图选点');
+            return;
+        }
+        parent.layer.msg('经纬度 [ ' +t_lng+','+ t_lat + ' ] 已成功填写');
+        parent.$('#inlng').val(t_lng);
+        parent.$('#inlat').val(t_lat);
+        parent.layer.close(index);
+    });
+</script>
+
+<script src="https://webapi.amap.com/maps?v=1.4.15&key=89a56839f9cd47a7715f04cdc795b740&plugin=AMap.Autocomplete,AMap.Walking"></script>
+<script type="text/javascript">
+    var x,y;
+    var map = new AMap.Map("container", {
+        resizeEnable: true,
+        zoom:15
+    });
+    var Markers=[];
+    var options = {
+        'showButton': true,//是否显示定位按钮
+        'buttonPosition': 'LB',//定位按钮的位置
+        /* LT LB RT RB */
+        'buttonOffset': new AMap.Pixel(10, 20),//定位按钮距离对应角落的距离
+        'showMarker': true,//是否显示定位点
+        'markerOptions':{//自定义定位点样式，同Marker的Options
+            'offset': new AMap.Pixel(-18, -36),
+            'content':'<img src="https://a.amap.com/jsapi_demos/static/resource/img/user.png" style="width:36px;height:36px"/>'
+        },
+        'showCircle': true,//是否显示定位精度圈
+        'circleOptions': {//定位精度圈的样式
+            'strokeColor': '#0093FF',
+            'noSelect': true,
+            'strokeOpacity': 0.5,
+            'strokeWeight': 1,
+            'fillColor': '#02B0FF',
+            'fillOpacity': 0.25
+        }
+    }
+
+    AMap.plugin(["AMap.Geolocation"], function(x,y) {
+        var geolocation = new AMap.Geolocation(options);
+        map.addControl(geolocation);
+        geolocation.getCurrentPosition(function (status,result){
+            if(status=='complete'){
+                x=result.position.lng;
+                y=result.position.lat;
+                marker1 = new AMap.Marker({
+                    icon: "",
+                    position: [x,y],
+                    offset: new AMap.Pixel(-13, -30)
+                });
+                marker1.setMap(map);
+            }
+
+        })
+    });
+
+    function computeDis() {
+        if (marker) {
+            var p1 = marker.getPosition();
+            var s = marker1.getPosition();
+            var walkingOption = {}
+            var distance;
+            // 步行导航
+            var walking = new AMap.Walking(walkingOption);
+
+            //根据起终点坐标规划步行路线
+            walking.search(p1,s, function(status, result) {
+                // result即是对应的步行路线数据信息，相关数据结构文档请参考  https://lbs.amap.com/api/javascript-api/reference/route-search#m_WalkingResult
+                if (status === 'complete') {
+                        distance=result.routes[0].distance;
+                    document.getElementById("route").value=distance;
+                }
+            });
+
+        }
+    }
+
+    function addMarker(e) {
+        marker = new AMap.Marker({
+            icon: "//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png",
+            position: [e.lnglat.getLng(),e.lnglat.getLat()],
+            offset: new AMap.Pixel(-13, -30)
+        });
+        marker.setMap(map);
+        Markers.push(marker);
+    }
+
+
+    function clearMarker() {
+        map.remove(Markers);
+    }
+    //为地图注册click事件获取鼠标点击出的经纬度坐标
+    map.on('click', function(e) {
+        document.getElementById("lng").value = e.lnglat.getLng(),
+        document.getElementById("lat").value = e.lnglat.getLat(),
+            addMarker(e)
+    });
+</script>
+</body>
+</html>

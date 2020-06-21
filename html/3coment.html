@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>闲 虾</title>
+    <link rel="stylesheet" href="../layui/css/layui.css">
+</head>
+
+<style>
+    #content{
+        overflow-x:auto;
+        overflow-y:hidden;
+    }
+</style>
+
+<body class="layui-layout-body" >
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-header layui-bg-cyan">
+            <div class="layui-logo"><span style="color: white; "><b>闲 虾</b></span></div>
+            <!-- 头部区域（可配合layui已有的水平导航） -->
+            <ul class="layui-nav layui-layout-left">
+                <li class="layui-nav-item"><a href="../index.html">欢 迎 页</a></li>
+                <li class="layui-nav-item"><a href="0home_c.html">主 界 面</a></li>
+                <li class="layui-nav-item"><a href="3coment.html">评 论</a></li-->
+            </ul>
+            <div class="layui-side layui-bg-blue">
+                <div class="layui-side-scroll">
+                    <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+                    <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+                        <li class="layui-nav-item layui-nav-itemed">
+                            <a class="" href="javascript:;">顾 客 操 作</a>
+                            <dl class="layui-nav-child">
+                                <dd><a href="1navi.html">&emsp;导 航</a></dd>
+                                <dd><a href="2serch.html">&emsp;查 询</a></dd>
+                                <dd><a href="4recommend.php">&emsp;闲 置 市 场</a></dd>
+                                <dd><a href="9buymessage.html">&emsp;我 要 求 购</a></dd>
+                            </dl>
+                        </li>
+                        <li class="layui-nav-item layui-nav-itemed">
+                            <a class="" href="javascript:;">关 于</a>
+                            <dl class="layui-nav-child">
+                                <dd><a href="5help.html">&emsp;帮 助</a></dd>
+                                <dd><a href="6about.html">&emsp;关 于 我 们</a></dd>
+                            </dl>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="layui-body" id="content">
+            <iframe src="3frame.php" frameborder="0" height="100%" width="100%"></iframe>
+        </div>
+        <div class="layui-footer">
+            <p align="right">闲 虾©Leisure Shrimp Beta 2020</p>
+        </div>
+    </div>
+    <!-- 看板娘显示 -->
+    <script type="text/javascript" charset="utf-8"  src="../src/L2Dwidget.0.min.js"></script>
+    <script type="text/javascript" charset="utf-8"  src="../src/L2Dwidget.min.js"></script>
+    <script type="text/javascript" charset="utf-8"  src="../src/L2Dwidget.set.js"></script>
+</body>
+</html>
